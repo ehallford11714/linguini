@@ -1,0 +1,41 @@
+{
+  "source": "fixture — offline purpose-aligned MCP catalog (v0.1)",
+  "servers": [
+    {
+      "id": "fetch",
+      "package": "@modelcontextprotocol/server-fetch",
+      "purpose_tags": ["grounding", "docs", "web"],
+      "description": "Web content fetching and markdown conversion for grounding"
+    },
+    {
+      "id": "filesystem",
+      "package": "@modelcontextprotocol/server-filesystem",
+      "purpose_tags": ["persist", "files"],
+      "description": "Path-scoped filesystem access"
+    },
+    {
+      "id": "memory",
+      "package": "@modelcontextprotocol/server-memory",
+      "purpose_tags": ["memory", "grounding", "entities"],
+      "description": "Knowledge-graph memory across sessions"
+    },
+    {
+      "id": "sequential-thinking",
+      "package": "@modelcontextprotocol/server-sequential-thinking",
+      "purpose_tags": ["lean-back", "reasoning"],
+      "description": "Structured reflective reasoning before forge"
+    },
+    {
+      "id": "github",
+      "package": "@modelcontextprotocol/server-github",
+      "purpose_tags": ["code", "grounding", "git"],
+      "description": "GitHub API for code grounding and export"
+    },
+    {
+      "id": "codeforge",
+      "package": "max-rousseau/codeforge-mcp",
+      "purpose_tags": ["verify", "codegen", "sandbox"],
+      "description": "Sandboxed code execution and skill reuse"
+    }
+  ]
+}
