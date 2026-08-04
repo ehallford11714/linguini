@@ -47,3 +47,8 @@ MCP tools: `linguini_create_native`, `linguini_wrap_chain`, `linguini_forge`.
 ## Lean-back
 
 `Linguini.fulfill` tries existing `nlp.*` / `builtin.*` tools first. If examples pass, mode=`chain` and nothing is forged — unless `require_native=True`.
+
+## Tutorial & examples
+
+- Walkthrough: [TUTORIAL.md](TUTORIAL.md)
+- Runnable create/use scripts: [EXAMPLES.md](EXAMPLES.md) · [`examples/`](../examples/)

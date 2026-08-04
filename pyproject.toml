@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "linguini"
-version = "0.1.1"
+version = "0.1.2"
 description = "NLP suite + tooling library that forges native novel tools ad hoc (ground → lean-back/chain → verify → persist)."
 readme = "README.md"
 license = { text = "MIT" }

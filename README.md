@@ -17,6 +17,16 @@ python -m venv .venv
 .\.venv\Scripts\pip install -e ".[dev]"
 ```
 
+## Tutorial & examples
+
+- **[Tutorial: forge and reuse novel tools](docs/TUTORIAL.md)** — start here
+- **[Examples catalog](docs/EXAMPLES.md)** · runnable scripts in [`examples/`](examples/)
+
+```powershell
+$env:PYTHONPATH = "src"
+python examples/run_all.py
+```
+
 ## Create a native tool
 
 ```python
@@ -69,12 +79,17 @@ print(result.mode)  # "chain" when existing tools suffice; "forge" on gap / requ
 
 ## Docs
 
-- [docs/PURPOSE.md](docs/PURPOSE.md) — why Linguini exists
-- [docs/TOOL_FORGE.md](docs/TOOL_FORGE.md) — purpose-driven forge + native create
-- [docs/SANDBOX.md](docs/SANDBOX.md) — threat model
-- [docs/MCP_CHAIN.md](docs/MCP_CHAIN.md) — discovery + chaining
+| Doc | Topic |
+|-----|--------|
+| [docs/TUTORIAL.md](docs/TUTORIAL.md) | Forge & reuse walkthrough |
+| [docs/EXAMPLES.md](docs/EXAMPLES.md) | Example scripts |
+| [docs/PURPOSE.md](docs/PURPOSE.md) | Why Linguini exists |
+| [docs/TOOL_FORGE.md](docs/TOOL_FORGE.md) | Purpose-driven forge |
+| [docs/SANDBOX.md](docs/SANDBOX.md) | Threat model |
+| [docs/MCP_CHAIN.md](docs/MCP_CHAIN.md) | Discovery + chaining |
+| [docs/README.md](docs/README.md) | Docs index |
 
-Secondary hygiene helpers: `linguini hygiene carag|netrin` (CARAG / Netrin-style routing).
+Secondary hygiene helpers: `linguini hygiene carag|netrin`.
 
 ## License
 

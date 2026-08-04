@@ -129,6 +129,13 @@ def lean_back(
 def _example_ok(actual: Any, expected: Any) -> bool:
     if expected is None:
         return True
+    # Bare token lists from nlp.tokenize / nlp.lowercase_tokens
+    if isinstance(expected, dict) and isinstance(actual, list) and "tokens" in expected:
+        if actual != expected["tokens"]:
+            return False
+        # Allow expected={"tokens": [...]} against a bare list result
+        extras = {k: v for k, v in expected.items() if k != "tokens"}
+        return not extras
     if isinstance(expected, dict) and isinstance(actual, dict):
         for k, v in expected.items():
             if k not in actual:

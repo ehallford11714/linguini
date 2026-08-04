@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from linguini.api import Linguini
 
 SERVER_NAME = "linguini"
-SERVER_VERSION = "0.1.1"
+SERVER_VERSION = "0.1.2"
 
 TOOLS: list[dict[str, Any]] = [
     {
@@ -185,12 +185,14 @@ def dispatch(ling: "Linguini", message: dict[str, Any]) -> dict[str, Any] | None
     params = message.get("params") or {}
 
     if method == "initialize":
+        from linguini import __version__ as pkg_version
+
         return _respond(
             msg_id,
             {
                 "protocolVersion": "2024-11-05",
                 "capabilities": {"tools": {}},
-                "serverInfo": {"name": SERVER_NAME, "version": SERVER_VERSION},
+                "serverInfo": {"name": SERVER_NAME, "version": pkg_version},
             },
         )
     if method == "notifications/initialized":

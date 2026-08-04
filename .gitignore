@@ -14,6 +14,9 @@ venv/
 htmlcov/
 .linguini/native_tools/*
 !.linguini/native_tools/.gitkeep
+examples/_workspace/.linguini/
+examples/_workspace/*
+!examples/_workspace/.gitkeep
 out/
 *.log
 .DS_Store

@@ -10,8 +10,6 @@ def test_leanback_tokenize_no_forge(tmp_path: Path) -> None:
         examples=[IOExample(input="Hello World", expected={"tokens": ["hello", "world"]})],
         invariants=["output tokens are lowercase"],
     )
-    # lowercase_tokens returns a list — adjust expected for lean-back match
-    purpose.examples = [IOExample(input="Hello World", expected=["hello", "world"])]
     r = ling.fulfill(purpose, forge_if_needed=True, persist=True)
     assert r.mode == "chain"
     assert r.ok is True

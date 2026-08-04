@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.2
+
+- Tutorial: [docs/TUTORIAL.md](docs/TUTORIAL.md) — forge and reuse novel tools
+- Runnable examples under `examples/` (create, use, wrap-chain, lean-back vs forge, pipeline)
+- Docs index: [docs/README.md](docs/README.md), [docs/EXAMPLES.md](docs/EXAMPLES.md)
+- MCP discover: optional `LINGUINI_MCP_CATALOG` overlay + `catalog_source` on results
+
 ## 0.1.1
 
 - `Linguini.create_native_tool` / `wrap_chain` — always forge novel natives; persist on green
