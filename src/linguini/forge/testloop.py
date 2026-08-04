@@ -9,6 +9,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Optional
 
+from typing import Sequence
+
 from linguini.forge.codegen import (
     generate_pytest_source,
     generate_tool_source,
@@ -59,9 +61,12 @@ def run_test_loop(
     max_repairs: int = 3,
     policy: SandboxPolicy | None = None,
     initial_source: str | None = None,
+    chain_steps: Sequence[str] | None = None,
 ) -> TestLoopResult:
     policy = policy or SandboxPolicy()
-    source = initial_source or generate_tool_source(purpose, tool_name=tool_name)
+    source = initial_source or generate_tool_source(
+        purpose, tool_name=tool_name, chain_steps=chain_steps
+    )
     test_source = generate_pytest_source(purpose, module_filename="TOOL_MODULE.py")
 
     with tempfile.TemporaryDirectory(prefix="linguini_forge_") as tmp:
@@ -78,7 +83,12 @@ def run_test_loop(
                         violations=violations,
                         work_dir=str(work),
                     )
-                source = repair_source(purpose, tool_name=tool_name, stderr="; ".join(violations))
+                source = repair_source(
+                    purpose,
+                    tool_name=tool_name,
+                    stderr="; ".join(violations),
+                    chain_steps=chain_steps,
+                )
                 continue
 
             (work / "TOOL_MODULE.py").write_text(source, encoding="utf-8")
@@ -104,5 +114,10 @@ def run_test_loop(
                     stderr=err,
                     work_dir=str(work),
                 )
-            source = repair_source(purpose, tool_name=tool_name, stderr=err or out)
+            source = repair_source(
+                purpose,
+                tool_name=tool_name,
+                stderr=err or out,
+                chain_steps=chain_steps,
+            )
         return TestLoopResult(ok=False, source=source, test_source=test_source)

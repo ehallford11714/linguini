@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "linguini"
-version = "0.1.0"
+version = "0.1.1"
 description = "NLP suite + tooling library that forges native novel tools ad hoc (ground → lean-back/chain → verify → persist)."
 readme = "README.md"
 license = { text = "MIT" }
@@ -31,6 +31,7 @@ all = ["linguini[dev,mcp,spacy,hf,gensim,nltk]"]
 
 [project.scripts]
 linguini = "linguini.cli:main"
+linguini-mcp = "linguini.mcp.server:main"
 
 [project.urls]
 Homepage = "https://github.com/ehallford11714/linguini"

@@ -56,6 +56,33 @@ def lean_back(
             gap_report="associative-only purpose refused (wisdom gate); set allow_associative_only to override",
         )
 
+    # Explicit request for a new native — do not lean-back onto library aliases
+    if purpose.require_native or purpose.name:
+        existing_native = f"native.{purpose.name}" if purpose.name else ""
+        if purpose.name and existing_native in {t["name"] for t in library.list(layer="native")}:
+            # Reuse already-forged native if it passes examples
+            candidates = [existing_native]
+            plan = ChainPlan(steps=candidates, rationale="reuse existing native with same name")
+            outputs: list[Any] = []
+            for ex in purpose.examples:
+                text = ex.input if isinstance(ex.input, str) else str(ex.input)
+                out = library.run(candidates[0], text=text, input=text)
+                outputs.append(out)
+                if not _example_ok(out, ex.expected):
+                    return LeanBackResult(
+                        satisfied=False,
+                        plan=plan,
+                        outputs=outputs,
+                        gap_report="existing native failed examples; re-forge may proceed",
+                    )
+            if purpose.examples:
+                return LeanBackResult(satisfied=True, plan=plan, outputs=outputs)
+        if purpose.require_native:
+            return LeanBackResult(
+                satisfied=False,
+                gap_report="require_native=True; forging a new native tool",
+            )
+
     candidates: list[str] = []
     if "lowercase" in need or ("tokenize" in need and "lower" in need):
         candidates = ["nlp.lowercase_tokens"]

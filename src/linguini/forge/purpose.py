@@ -24,6 +24,10 @@ class ForgePurpose:
     must_compose: Optional[list[str]] = None
     allow_associative_only: bool = False
     name: Optional[str] = None
+    # When True, lean-back will not claim satisfaction — always forge a new native.
+    require_native: bool = False
+    # Preferred codegen template: auto | entity_hygiene | tokenize_hygiene | chain_wrap
+    template: str = "auto"
 
     def purpose_hash(self) -> str:
         payload = {
@@ -43,5 +47,7 @@ class ForgePurpose:
             "must_compose": list(self.must_compose or []),
             "allow_associative_only": self.allow_associative_only,
             "name": self.name,
+            "require_native": self.require_native,
+            "template": self.template,
             "purpose_hash": self.purpose_hash(),
         }

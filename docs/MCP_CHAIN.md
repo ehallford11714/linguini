@@ -5,6 +5,7 @@
 - Offline fixture catalog of purpose-aligned servers (Fetch, Memory, Sequential Thinking, Filesystem, GitHub, CodeForge)  
 - `linguini discover --purpose "…"` ranks by keyword/tag overlap  
 - `linguini chain` runs **local** tool steps  
+- Stdio MCP server: `linguini mcp` / `linguini-mcp` exposing forge, `linguini_create_native`, tools, chain, discover  
 
 ## v0.2 (planned)
 

@@ -17,33 +17,45 @@ python -m venv .venv
 .\.venv\Scripts\pip install -e ".[dev]"
 ```
 
-## Quick start
+## Create a native tool
+
+```python
+from linguini import Linguini
+
+ling = Linguini(root=".")
+fr = ling.create_native_tool(
+    "novel entity hygiene analyzer for claims",
+    name="entity_hygiene_v1",
+)
+assert fr.persisted
+print(ling.run_tool("native.entity_hygiene_v1", text="Acme Corp grew 12%."))
+```
+
+```powershell
+python -m linguini create --need "novel entity hygiene" --name entity_hygiene_v1
+python -m linguini tools run native.entity_hygiene_v1 --text "Acme Corp grew 12%."
+python -m linguini wrap-chain --steps "nlp.lowercase_tokens,nlp.claim_hygiene" --name tok_hygiene
+```
+
+MCP stdio server (also `linguini-mcp`):
+
+```powershell
+python -m linguini mcp
+```
+
+## Lean-back first
 
 ```python
 from linguini import Linguini, ForgePurpose, IOExample
 
 ling = Linguini(root=".")
-
-# Lean-back: use existing NLP tools when they already satisfy the purpose
 result = ling.fulfill(
     ForgePurpose(
         need="tokenize and lowercase text",
         examples=[IOExample(input="Hello World", expected={"tokens": ["hello", "world"]})],
-        invariants=["output tokens are lowercase"],
     )
 )
-print(result.mode)  # "chain" or "forge"
-print(result.evidence)
-
-# List tooling layers
-print(ling.tools.list())
-```
-
-```powershell
-python -m linguini backends
-python -m linguini tools list
-python -m linguini discover --purpose "fetch docs and extract entities"
-python -m linguini forge --need "compose tokenize + claim_hygiene" --name hygiene_tokens
+print(result.mode)  # "chain" when existing tools suffice; "forge" on gap / require_native
 ```
 
 ## Operating principles
@@ -58,11 +70,11 @@ python -m linguini forge --need "compose tokenize + claim_hygiene" --name hygien
 ## Docs
 
 - [docs/PURPOSE.md](docs/PURPOSE.md) — why Linguini exists
-- [docs/TOOL_FORGE.md](docs/TOOL_FORGE.md) — purpose-driven forge + test loop
+- [docs/TOOL_FORGE.md](docs/TOOL_FORGE.md) — purpose-driven forge + native create
 - [docs/SANDBOX.md](docs/SANDBOX.md) — threat model
 - [docs/MCP_CHAIN.md](docs/MCP_CHAIN.md) — discovery + chaining
 
-Hygiene / advanced (secondary): CARAG dual-band context and Netrin-style routing may land in later releases; they are not the product headline.
+Secondary hygiene helpers: `linguini hygiene carag|netrin` (CARAG / Netrin-style routing).
 
 ## License
 
