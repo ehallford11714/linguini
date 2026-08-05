@@ -1,0 +1,18 @@
+id: spec_distill
+description: Distill markdown specs with mistune into checklist + topics + entities
+purpose_tags: [markdown, docs, spec, checklist, topics, mistune]
+compose_steps:
+  - kind: lib
+    ref: mistune
+    package: mistune
+  - kind: nlp
+    ref: nlp.compose_entity_hygiene
+allowed_imports: [linguini, linguini.suite.nlp, mistune, re]
+pip_deps: [mistune]
+npm_deps: []
+mcp_tools: []
+template: spec_distill
+require_novel: true
+example_tests:
+  - input: "# Spec\n\n- [ ] Add Acme Corp auth\n- Ship hygiene gate"
+    expected: { novel: true }

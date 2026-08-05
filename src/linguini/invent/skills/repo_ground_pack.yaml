@@ -1,0 +1,19 @@
+id: repo_ground_pack
+description: GitHub code search + memory stubs + wisdom check on justification
+purpose_tags: [github, code, grounding, memory, wisdom, repo]
+compose_steps:
+  - kind: mcp
+    ref: github.search_code
+  - kind: mcp
+    ref: memory.search
+  - kind: nlp
+    ref: nlp.claim_hygiene
+allowed_imports: [linguini, linguini.suite.nlp, linguini.invent.adapters.mcp_proxy]
+pip_deps: []
+npm_deps: []
+mcp_tools: [github.search_code, memory.search]
+template: repo_ground_pack
+require_novel: true
+example_tests:
+  - input: "fix null pointer in auth handler"
+    expected: { novel: true }

@@ -16,17 +16,16 @@ purpose → discover → lean-back/compose
 
 ## Skills (deterministic recipes)
 
-Listed with `linguini skills list`. Shipped skills:
+Listed with `linguini skills list`. Full walkthrough: [TUTORIAL.md](TUTORIAL.md).
 
-| Skill | Combines |
-|-------|----------|
-| `entity_hygiene` | NLP entity + hygiene composite |
-| `tokenize_hygiene` | tokens + claim hygiene |
-| `lowercase_tokens` | tokens + lemmas |
-| `html_ground_parse` | BeautifulSoup + NLP + `fetch.fetch` stub |
-| `mcp_chain_wrap` | `fetch.fetch` + `memory.search` stubs + hygiene |
+| Tier | Skills |
+|------|--------|
+| NLP | `entity_hygiene`, `tokenize_hygiene`, `lowercase_tokens` |
+| MCP | `mcp_chain_wrap`, `repo_ground_pack`, `reflect_hygiene` |
+| Pip | `html_ground_parse`, `yaml_config_hygiene`, `bleach_sanitize_analyze`, `jsonschema_claim_gate`, `networkx_entity_graph`, `date_aware_claims`, `spec_distill` |
+| npm+Py | `md_npm_hygiene`, `cheerio_npm_html`, `turndown_html_md` |
 
-Add YAML under `src/linguini/invent/skills/`.
+Add YAML under `src/linguini/invent/skills/` + template in `codegen.py`.
 
 ## Pip + npm (cross-runtime)
 

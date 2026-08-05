@@ -1,0 +1,18 @@
+id: networkx_entity_graph
+description: Build co-occurrence graph of entities with networkx + hygiene
+purpose_tags: [graph, entities, networkx, memory, hygiene]
+compose_steps:
+  - kind: lib
+    ref: networkx
+    package: networkx
+  - kind: nlp
+    ref: nlp.compose_entity_hygiene
+allowed_imports: [linguini, linguini.suite.nlp, networkx]
+pip_deps: [networkx]
+npm_deps: []
+mcp_tools: []
+template: networkx_entity_graph
+require_novel: true
+example_tests:
+  - input: "Acme Corp partnered with Globex Inc in New York."
+    expected: { novel: true }

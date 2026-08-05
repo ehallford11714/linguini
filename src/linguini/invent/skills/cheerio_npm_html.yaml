@@ -1,0 +1,18 @@
+id: cheerio_npm_html
+description: npm cheerio HTML extract + Python entity hygiene (cross-runtime)
+purpose_tags: [html, cheerio, npm, parse, grounding, entity]
+compose_steps:
+  - kind: npm
+    ref: cheerio
+    package: cheerio
+  - kind: nlp
+    ref: nlp.compose_entity_hygiene
+allowed_imports: [linguini, linguini.suite.nlp, linguini.invent.adapters.node_proxy]
+pip_deps: []
+npm_deps: [cheerio]
+mcp_tools: []
+template: cheerio_npm_html
+require_novel: true
+example_tests:
+  - input: "<html><body><p>Acme Corp grew 12%.</p><a href='/x'>x</a></body></html>"
+    expected: { novel: true }

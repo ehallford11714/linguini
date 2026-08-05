@@ -84,3 +84,27 @@ const text = String(html).replace(/<[^>]+>/g, ' ').replace(/\\s+/g, ' ').trim();
 globalThis.__linguini_out = {{ok:true, html, text, engine:'marked'}};
 """
     return call_node("marked", code=code, root=root)
+
+
+def cheerio_to_text(html: str, *, root: Path | str | None = None) -> dict[str, Any]:
+    """Use npm `cheerio` to extract text from HTML."""
+    code = f"""
+const cheerio = require('cheerio');
+const $ = cheerio.load({html!r});
+const text = $('body').text().replace(/\\s+/g, ' ').trim() || $.root().text().replace(/\\s+/g, ' ').trim();
+const links = $('a').map((i, el) => $(el).attr('href')).get().filter(Boolean).slice(0, 20);
+globalThis.__linguini_out = {{ok:true, text, links, engine:'cheerio'}};
+"""
+    return call_node("cheerio", code=code, root=root)
+
+
+def html_to_markdown(html: str, *, root: Path | str | None = None) -> dict[str, Any]:
+    """Use npm `turndown` to convert HTML → markdown."""
+    code = f"""
+const TurndownService = require('turndown');
+const td = new TurndownService();
+const markdown = td.turndown({html!r});
+const text = String(markdown).replace(/[#*_`\\[\\]]+/g, ' ').replace(/\\s+/g, ' ').trim();
+globalThis.__linguini_out = {{ok:true, markdown, text, engine:'turndown'}};
+"""
+    return call_node("turndown", code=code, root=root)

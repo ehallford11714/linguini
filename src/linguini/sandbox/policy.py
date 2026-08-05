@@ -31,6 +31,11 @@ DEFAULT_ALLOWED_IMPORTS = frozenset(
         "bs4",
         "yaml",
         "pydantic",
+        "bleach",
+        "jsonschema",
+        "networkx",
+        "dateutil",
+        "mistune",
     }
 )
 

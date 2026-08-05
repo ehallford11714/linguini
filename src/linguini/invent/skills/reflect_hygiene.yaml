@@ -1,0 +1,17 @@
+id: reflect_hygiene
+description: Sequential-thinking stub then claim hygiene and entity extract
+purpose_tags: [reasoning, lean-back, hygiene, reflect, sequential]
+compose_steps:
+  - kind: mcp
+    ref: sequential-thinking.think
+  - kind: nlp
+    ref: nlp.claim_hygiene
+allowed_imports: [linguini, linguini.suite.nlp, linguini.invent.adapters.mcp_proxy]
+pip_deps: []
+npm_deps: []
+mcp_tools: [sequential-thinking.think]
+template: reflect_hygiene
+require_novel: true
+example_tests:
+  - input: "Demand looks like last quarter so raise price"
+    expected: { novel: true }

@@ -1,0 +1,18 @@
+id: jsonschema_claim_gate
+description: Validate claim JSON with jsonschema then wisdom/hygiene gate
+purpose_tags: [schema, validate, json, claim, hygiene, gate]
+compose_steps:
+  - kind: lib
+    ref: jsonschema
+    package: jsonschema
+  - kind: nlp
+    ref: nlp.claim_hygiene
+allowed_imports: [linguini, linguini.suite.nlp, jsonschema, json]
+pip_deps: [jsonschema]
+npm_deps: []
+mcp_tools: []
+template: jsonschema_claim_gate
+require_novel: true
+example_tests:
+  - input: '{"claim": "Acme Corp grew 12%."}'
+    expected: { novel: true }

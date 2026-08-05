@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2
+
+- Ten new inventable skills: YAML/bleach/jsonschema/networkx/dateutil/mistune + cheerio/turndown npm + repo_ground_pack/reflect_hygiene
+- Tutorial skill catalog documenting all generatable recipes
+- node_proxy: `cheerio_to_text`, `html_to_markdown`
+
 ## 0.2.1
 
 - Expanded pip catalog + curated **npm** catalog for cross-runtime invention

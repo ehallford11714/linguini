@@ -1,0 +1,18 @@
+id: yaml_config_hygiene
+description: Parse YAML config then run entity + claim hygiene on values
+purpose_tags: [yaml, config, parse, hygiene, entity]
+compose_steps:
+  - kind: lib
+    ref: yaml
+    package: pyyaml
+  - kind: nlp
+    ref: nlp.compose_entity_hygiene
+allowed_imports: [linguini, linguini.suite.nlp, yaml]
+pip_deps: [pyyaml]
+npm_deps: []
+mcp_tools: []
+template: yaml_config_hygiene
+require_novel: true
+example_tests:
+  - input: "claim: Acme Corp grew 12%\naction: expand"
+    expected: { novel: true }

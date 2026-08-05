@@ -11,6 +11,8 @@ Runnable scripts in [`examples/`](../examples/).
 | `05_create_and_reuse_pipeline.py` | Multi invent + chain + discover |
 | `06_invent_mcp_and_lib.py` | MCP chain skill + HTML/lib skill |
 
+Skill catalog (16+ inventable recipes): [TUTORIAL.md §3](TUTORIAL.md#3-skill-catalog--what-can-be-generated).
+
 ```powershell
 $env:PYTHONPATH = "src"
 python examples/run_all.py

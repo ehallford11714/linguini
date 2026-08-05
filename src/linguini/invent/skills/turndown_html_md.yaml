@@ -1,0 +1,18 @@
+id: turndown_html_md
+description: npm turndown HTML to markdown then entity hygiene
+purpose_tags: [html, markdown, turndown, npm, docs, entity]
+compose_steps:
+  - kind: npm
+    ref: turndown
+    package: turndown
+  - kind: nlp
+    ref: nlp.compose_entity_hygiene
+allowed_imports: [linguini, linguini.suite.nlp, linguini.invent.adapters.node_proxy]
+pip_deps: []
+npm_deps: [turndown]
+mcp_tools: []
+template: turndown_html_md
+require_novel: true
+example_tests:
+  - input: "<h1>Acme Corp</h1><p>Grew <b>12%</b>.</p>"
+    expected: { novel: true }

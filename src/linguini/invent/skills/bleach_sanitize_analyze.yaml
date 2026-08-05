@@ -1,0 +1,18 @@
+id: bleach_sanitize_analyze
+description: Strip HTML with bleach then entity/claim hygiene
+purpose_tags: [html, sanitize, security, bleach, hygiene]
+compose_steps:
+  - kind: lib
+    ref: bleach
+    package: bleach
+  - kind: nlp
+    ref: nlp.compose_entity_hygiene
+allowed_imports: [linguini, linguini.suite.nlp, bleach]
+pip_deps: [bleach]
+npm_deps: []
+mcp_tools: []
+template: bleach_sanitize_analyze
+require_novel: true
+example_tests:
+  - input: "<b>Acme Corp</b> grew 12%."
+    expected: { novel: true }

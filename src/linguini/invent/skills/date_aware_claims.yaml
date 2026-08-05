@@ -1,0 +1,18 @@
+id: date_aware_claims
+description: Extract dates with python-dateutil then entity/claim hygiene
+purpose_tags: [time, date, parse, claims, hygiene, entity]
+compose_steps:
+  - kind: lib
+    ref: dateutil
+    package: python-dateutil
+  - kind: nlp
+    ref: nlp.compose_entity_hygiene
+allowed_imports: [linguini, linguini.suite.nlp, dateutil, re]
+pip_deps: [python-dateutil]
+npm_deps: []
+mcp_tools: []
+template: date_aware_claims
+require_novel: true
+example_tests:
+  - input: "On Jan 15, 2024 Acme Corp grew 12%."
+    expected: { novel: true }
