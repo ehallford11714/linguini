@@ -70,7 +70,7 @@ python -m linguini invent --need "..." --name my_op --llm
 
 ## Tutorial & examples
 
-- **[Tutorial](docs/TUTORIAL.md)** — invent, verify, reuse
+- **[Tutorial](docs/TUTORIAL.md)** — invent, verify, reuse + skill catalog (NLP / MCP / pip / npm)
 - **[Examples](docs/EXAMPLES.md)** · [`examples/`](examples/)
 - **[INVENT.md](docs/INVENT.md)** — inventor architecture
 
