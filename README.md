@@ -42,6 +42,15 @@ python -m linguini libs list
 python -m linguini tools run native.mcp_chain --text "Ground this claim"
 ```
 
+Cross-runtime (npm + Python) and open installs:
+
+```powershell
+python -m linguini npm list
+python -m linguini invent --need "markdown npm parse hygiene" --name md_op --skill md_npm_hygiene
+# Beyond curated catalogs (still sanitized + isolated + verify-always):
+python -m linguini invent --need "..." --name x --skill entity_hygiene --open-pip --open-npm
+```
+
 Bounded LLM fill (optional; needs `LINGUINI_LLM_API_KEY` / `OPENAI_API_KEY`):
 
 ```powershell

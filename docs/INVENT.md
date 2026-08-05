@@ -28,9 +28,19 @@ Listed with `linguini skills list`. Shipped skills:
 
 Add YAML under `src/linguini/invent/skills/`.
 
-## Lib allowlist
+## Pip + npm (cross-runtime)
 
-`linguini libs list` reads `invent/lib_catalog.yaml`. Only these packages may be `pip install`’d into `.linguini/forge_venv/`. Network-tagged packages require `SandboxPolicy.allow_network=True`.
+| CLI | Catalog | Install root |
+|-----|---------|--------------|
+| `linguini libs list` | `invent/lib_catalog.yaml` | `.linguini/forge_venv/` |
+| `linguini npm list` | `invent/npm_catalog.yaml` | `.linguini/forge_node/` |
+
+**Default:** only curated catalog packages.  
+**Open mode:** `--open-pip` / `--open-npm` (or `SandboxPolicy.allow_open_pip/npm`) installs beyond the catalog into the same isolated dirs. Specs are name-sanitized (no shell metacharacters). Lint + pytest still gate persist.
+
+Runtime-network packages (`network: true` in catalog, e.g. `httpx`) still need `allow_network`.
+
+Cross-runtime bridge: `linguini.invent.adapters.node_proxy` (e.g. skill `md_npm_hygiene` = npm `marked` + Python hygiene).
 
 ## LLM bounds
 

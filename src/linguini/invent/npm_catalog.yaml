@@ -1,0 +1,49 @@
+# Curated npm allowlist for cross-runtime invention.
+# With policy.allow_open_npm, plans may request packages outside this list
+# (name-sanitized; installed only under .linguini/forge_node).
+packages:
+  - name: marked
+    purpose_tags: [markdown, docs, parse]
+    network: false
+  - name: cheerio
+    purpose_tags: [html, parse, grounding]
+    network: false
+  - name: sanitize-html
+    purpose_tags: [html, sanitize, security]
+    network: false
+  - name: zod
+    purpose_tags: [schema, validate, data]
+    network: false
+  - name: yaml
+    purpose_tags: [config, parse, data]
+    network: false
+  - name: remark
+    purpose_tags: [markdown, docs]
+    network: false
+  - name: unified
+    purpose_tags: [markdown, docs, parse]
+    network: false
+  - name: hast-util-to-text
+    purpose_tags: [html, text, parse]
+    network: false
+  - name: mdast-util-to-string
+    purpose_tags: [markdown, text]
+    network: false
+  - name: node-html-parser
+    purpose_tags: [html, parse]
+    network: false
+  - name: lodash
+    purpose_tags: [util, data]
+    network: false
+  - name: date-fns
+    purpose_tags: [time, parse]
+    network: false
+  - name: ajv
+    purpose_tags: [schema, validate]
+    network: false
+  - name: turndown
+    purpose_tags: [html, markdown, docs]
+    network: false
+  - name: linkedom
+    purpose_tags: [html, dom, parse]
+    network: false

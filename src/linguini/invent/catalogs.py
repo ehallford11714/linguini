@@ -1,4 +1,4 @@
-"""Load skills + allowlisted lib catalog."""
+"""Load skills + allowlisted pip/npm catalogs."""
 
 from __future__ import annotations
 
@@ -7,6 +7,8 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+
+from linguini.invent.pkg_names import npm_base_name, pip_base_name
 
 
 def _pkg_dir(*parts: str) -> Path:
@@ -22,24 +24,50 @@ def _pkg_dir(*parts: str) -> Path:
 
 def load_lib_catalog() -> dict[str, Any]:
     path = _pkg_dir("lib_catalog.yaml")
-    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-    return data
+    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+
+
+def load_npm_catalog() -> dict[str, Any]:
+    path = _pkg_dir("npm_catalog.yaml")
+    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
 def list_libs() -> list[dict[str, Any]]:
-    data = load_lib_catalog()
-    return list(data.get("packages") or [])
+    return list((load_lib_catalog().get("packages") or []))
+
+
+def list_npm() -> list[dict[str, Any]]:
+    return list((load_npm_catalog().get("packages") or []))
 
 
 def lib_by_name(name: str) -> dict[str, Any] | None:
+    try:
+        base = pip_base_name(name)
+    except ValueError:
+        base = name
     for pkg in list_libs():
-        if pkg.get("name") == name or name in (pkg.get("import_roots") or []):
+        if pkg.get("name") == base or base in (pkg.get("import_roots") or []):
+            return pkg
+    return None
+
+
+def npm_by_name(name: str) -> dict[str, Any] | None:
+    try:
+        base = npm_base_name(name)
+    except ValueError:
+        base = name
+    for pkg in list_npm():
+        if pkg.get("name") == base:
             return pkg
     return None
 
 
 def is_pip_allowlisted(name: str) -> bool:
     return lib_by_name(name) is not None
+
+
+def is_npm_allowlisted(name: str) -> bool:
+    return npm_by_name(name) is not None
 
 
 def load_skills() -> list[dict[str, Any]]:
@@ -70,6 +98,7 @@ def list_skills() -> list[dict[str, Any]]:
                 "description": s.get("description"),
                 "purpose_tags": list(s.get("purpose_tags") or []),
                 "pip_deps": list(s.get("pip_deps") or []),
+                "npm_deps": list(s.get("npm_deps") or []),
                 "mcp_tools": list(s.get("mcp_tools") or []),
                 "template": s.get("template"),
             }

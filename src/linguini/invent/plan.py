@@ -34,6 +34,7 @@ class InventionPlan:
     steps: list[PlanStep] = field(default_factory=list)
     allowed_imports: list[str] = field(default_factory=list)
     pip_deps: list[str] = field(default_factory=list)
+    npm_deps: list[str] = field(default_factory=list)
     mcp_tools: list[str] = field(default_factory=list)
     template: str = "entity_hygiene"
     require_novel: bool = True
@@ -51,6 +52,7 @@ class InventionPlan:
             "steps": [s.to_dict() for s in self.steps],
             "allowed_imports": sorted(set(self.allowed_imports)),
             "pip_deps": sorted(set(self.pip_deps)),
+            "npm_deps": sorted(set(self.npm_deps)),
             "mcp_tools": sorted(set(self.mcp_tools)),
             "template": self.template,
             "require_novel": self.require_novel,
@@ -59,6 +61,7 @@ class InventionPlan:
         self.bounds_hash = hashlib.sha256(blob.encode("utf-8")).hexdigest()[:16]
         self.allowed_imports = sorted(set(self.allowed_imports))
         self.pip_deps = sorted(set(self.pip_deps))
+        self.npm_deps = sorted(set(self.npm_deps))
         self.mcp_tools = sorted(set(self.mcp_tools))
         self.frozen = True
         return self
@@ -75,6 +78,7 @@ class InventionPlan:
             "steps": [s.to_dict() for s in self.steps],
             "allowed_imports": list(self.allowed_imports),
             "pip_deps": list(self.pip_deps),
+            "npm_deps": list(self.npm_deps),
             "mcp_tools": list(self.mcp_tools),
             "template": self.template,
             "require_novel": self.require_novel,
@@ -92,8 +96,11 @@ class InventionBrief:
 
     allowed_mcp: list[str] = field(default_factory=list)
     allowed_libs: list[str] = field(default_factory=list)
+    allowed_npm: list[str] = field(default_factory=list)
     prefer_skill: Optional[str] = None
     use_llm: bool = False
+    open_pip: bool = False
+    open_npm: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)

@@ -15,6 +15,7 @@ htmlcov/
 .linguini/native_tools/*
 !.linguini/native_tools/.gitkeep
 .linguini/forge_venv/
+.linguini/forge_node/
 examples/_workspace/.linguini/
 examples/_workspace/*
 !examples/_workspace/.gitkeep

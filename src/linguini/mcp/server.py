@@ -110,7 +110,7 @@ TOOLS: list[dict[str, Any]] = [
     },
     {
         "name": "linguini_invent",
-        "description": "Invent a novel tool from skills/MCP/libs (lint + pytest before persist)",
+        "description": "Invent a novel tool from skills/MCP/pip/npm (lint + pytest before persist)",
         "inputSchema": {
             "type": "object",
             "properties": {
@@ -118,6 +118,8 @@ TOOLS: list[dict[str, Any]] = [
                 "name": {"type": "string"},
                 "skill": {"type": "string"},
                 "use_llm": {"type": "boolean"},
+                "open_pip": {"type": "boolean"},
+                "open_npm": {"type": "boolean"},
                 "persist": {"type": "boolean"},
             },
             "required": ["need", "name"],
@@ -130,7 +132,12 @@ TOOLS: list[dict[str, Any]] = [
     },
     {
         "name": "linguini_libs_list",
-        "description": "List allowlisted pip packages for invention",
+        "description": "List curated pip packages for invention",
+        "inputSchema": {"type": "object", "properties": {}},
+    },
+    {
+        "name": "linguini_npm_list",
+        "description": "List curated npm packages for cross-runtime invention",
         "inputSchema": {"type": "object", "properties": {}},
     },
 ]
@@ -198,12 +205,16 @@ def handle_tool(ling: "Linguini", name: str, arguments: dict[str, Any] | None) -
                 prefer_skill=args.get("skill"),
                 use_llm=bool(args.get("use_llm")),
                 persist=bool(args.get("persist", True)),
+                open_pip=bool(args.get("open_pip")),
+                open_npm=bool(args.get("open_npm")),
             )
             return _ok_text(fr.to_dict())
         if name == "linguini_skills_list":
             return _ok_text(ling.skills())
         if name == "linguini_libs_list":
             return _ok_text(ling.libs())
+        if name == "linguini_npm_list":
+            return _ok_text(ling.npm_packages())
         return _err_text(f"Unknown tool: {name}")
     except Exception as exc:  # noqa: BLE001 — surface to MCP client
         return _err_text(f"{type(exc).__name__}: {exc}")

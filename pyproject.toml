@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "linguini"
-version = "0.2.0"
+version = "0.2.1"
 description = "Tool inventor: compose MCP servers, allowlisted libs, and skills into novel natives (lean-back → invent → lint → pytest → persist)."
 readme = "README.md"
 license = { text = "MIT" }
@@ -47,6 +47,7 @@ linguini = [
   "invent/skills/*.yaml",
   "py.typed",
 ]
+# invent catalogs: lib_catalog.yaml + npm_catalog.yaml via invent/*.yaml
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -1,0 +1,22 @@
+id: md_npm_hygiene
+description: Cross-runtime — npm marked markdown parse + Python entity/claim hygiene
+purpose_tags: [markdown, npm, docs, parse, hygiene, entity, cross]
+compose_steps:
+  - kind: npm
+    ref: marked
+    package: marked
+  - kind: nlp
+    ref: nlp.compose_entity_hygiene
+allowed_imports:
+  - linguini
+  - linguini.suite.nlp
+  - linguini.invent.adapters.node_proxy
+pip_deps: []
+npm_deps:
+  - marked
+mcp_tools: []
+template: md_npm_hygiene
+require_novel: true
+example_tests:
+  - input: "# Acme Corp\n\nGrew **12%**. Demand looks fine."
+    expected: { novel: true }

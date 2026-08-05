@@ -102,6 +102,8 @@ class ToolLibrary:
 
     def _run_native(self, tool: ToolSpec, kwargs: dict[str, Any]) -> Any:
         """Load native module run() under static scan — in-process for trusted persisted tools."""
+        import os
+
         from linguini.sandbox.policy import SandboxPolicy
         from linguini.sandbox.runner import SandboxViolation, static_scan
 
@@ -114,6 +116,8 @@ class ToolLibrary:
         violations = static_scan(source, SandboxPolicy())
         if violations:
             raise SandboxViolation("; ".join(violations))
+        # Cross-runtime natives resolve npm modules under this root
+        os.environ["LINGUINI_ROOT"] = str(self.root)
         ns: dict[str, Any] = {"__name__": tool.name}
         # Restricted exec of already-tested natives
         exec(compile(source, str(path), "exec"), ns, ns)  # noqa: S102 — gated by static_scan + prior pytest

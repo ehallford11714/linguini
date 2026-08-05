@@ -24,6 +24,8 @@ def generate_from_plan(plan: InventionPlan, *, tool_name: str | None = None) -> 
         return _html_ground_parse(slug, plan)
     if template == "mcp_chain_wrap":
         return _mcp_chain_wrap(slug, plan)
+    if template == "md_npm_hygiene":
+        return _md_npm_hygiene(slug, plan)
     if template == "tokenize_hygiene":
         return _tokenize_hygiene(slug)
     if template == "lowercase_tokens":
@@ -103,6 +105,28 @@ def run(text: str = "", input: str = "", **kwargs):
     result["mcp"] = mcp_out
     result["skill_id"] = {plan.skill_id!r}
     result["bounds_hash"] = {plan.bounds_hash!r}
+    return result
+'''
+
+
+def _md_npm_hygiene(slug: str, plan: InventionPlan) -> str:
+    return f'''"""Native tool {slug} — npm marked + Python entity hygiene (cross-runtime)."""
+from __future__ import annotations
+
+def run(text: str = "", input: str = "", **kwargs):
+    from linguini.suite.nlp import NLPSuite
+    from linguini.invent.adapters.node_proxy import markdown_to_text
+
+    raw = text or input
+    md = markdown_to_text(raw)
+    plain = (md.get("text") if md.get("ok") else None) or raw
+    result = NLPSuite().compose_entity_hygiene(plain)
+    result["tool"] = "{slug}"
+    result["novel"] = True
+    result["npm"] = md
+    result["skill_id"] = {plan.skill_id!r}
+    result["bounds_hash"] = {plan.bounds_hash!r}
+    result["ecosystems"] = ["npm", "pip", "nlp"]
     return result
 '''
 

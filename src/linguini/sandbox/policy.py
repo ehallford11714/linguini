@@ -27,6 +27,7 @@ DEFAULT_ALLOWED_IMPORTS = frozenset(
         "linguini.invent.adapters",
         "linguini.invent.adapters.mcp_proxy",
         "linguini.invent.adapters.lib_proxy",
+        "linguini.invent.adapters.node_proxy",
         "bs4",
         "yaml",
         "pydantic",
@@ -53,6 +54,11 @@ class SandboxPolicy:
     allow_subprocess: bool = False
     allow_filesystem_write: bool = False
     allow_pip_install: bool = True
+    allow_npm_install: bool = True
+    # Open mode: install packages beyond curated catalogs (still name-sanitized,
+    # isolated under .linguini/forge_venv|forge_node, verify-always before persist).
+    allow_open_pip: bool = False
+    allow_open_npm: bool = False
     allowed_imports: frozenset[str] = DEFAULT_ALLOWED_IMPORTS
     allow_mcp_servers: list[str] = field(default_factory=list)
     pytest_timeout_s: float = 30.0

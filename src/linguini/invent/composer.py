@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any, Optional
 
 from linguini.forge.purpose import ForgePurpose
-from linguini.invent.catalogs import lib_by_name, list_libs, load_skills, skill_by_id
+from linguini.invent.catalogs import lib_by_name, list_libs, list_npm, load_skills, npm_by_name, skill_by_id
 from linguini.invent.plan import InventionBrief, InventionPlan, PlanStep
 from linguini.mcp.discover import discover_for_purpose
 
@@ -70,6 +70,7 @@ def compose_plan(
 
     allowed_imports = list(skill.get("allowed_imports") or [])
     pip_deps = list(skill.get("pip_deps") or [])
+    npm_deps = list(skill.get("npm_deps") or [])
     mcp_tools = list(skill.get("mcp_tools") or [])
 
     # Intersect with brief allowlists when provided
@@ -81,18 +82,32 @@ def compose_plan(
                 for root in info.get("import_roots") or []:
                     if root not in allowed_imports:
                         allowed_imports.append(root)
+    if brief.allowed_npm:
+        npm_deps = [d for d in npm_deps if d in brief.allowed_npm]
     if brief.allowed_mcp:
         mcp_tools = [t for t in mcp_tools if t in brief.allowed_mcp or t.split(".")[0] in brief.allowed_mcp]
 
-    # Enrich evidence from discover + libs
+    # Enrich evidence from discover + libs + npm
     evidence = [
         {"type": "skill", "id": skill.get("id"), "score": score_skill(skill, purpose)},
         {"type": "discover_top", "servers": [d.get("id") for d in discovered[:5]]},
+        {"type": "ecosystem", "open_pip": brief.open_pip, "open_npm": brief.open_npm},
     ]
     for dep in pip_deps:
         info = lib_by_name(dep)
         if info:
             evidence.append({"type": "lib", "name": dep, "tags": info.get("purpose_tags")})
+        else:
+            evidence.append({"type": "lib_open", "name": dep})
+    for dep in npm_deps:
+        info = npm_by_name(dep)
+        if info:
+            evidence.append({"type": "npm", "name": dep, "tags": info.get("purpose_tags")})
+        else:
+            evidence.append({"type": "npm_open", "name": dep})
+
+    if "linguini.invent.adapters.node_proxy" not in allowed_imports and npm_deps:
+        allowed_imports.append("linguini.invent.adapters.node_proxy")
 
     plan = InventionPlan(
         name=name,
@@ -101,6 +116,7 @@ def compose_plan(
         steps=steps,
         allowed_imports=allowed_imports,
         pip_deps=pip_deps,
+        npm_deps=npm_deps,
         mcp_tools=mcp_tools,
         template=str(skill.get("template") or "entity_hygiene"),
         require_novel=bool(skill.get("require_novel", True)),
@@ -115,6 +131,22 @@ def rank_libs_for_purpose(purpose: ForgePurpose, *, limit: int = 10) -> list[dic
     toks = _tokens(purpose.need)
     scored: list[tuple[int, dict[str, Any]]] = []
     for pkg in list_libs():
+        tags = set(pkg.get("purpose_tags") or [])
+        score = sum(2 for t in tags if t in toks)
+        scored.append((score, pkg))
+    scored.sort(key=lambda x: (-x[0], x[1].get("name") or ""))
+    out = []
+    for score, pkg in scored[:limit]:
+        row = dict(pkg)
+        row["score"] = score
+        out.append(row)
+    return out
+
+
+def rank_npm_for_purpose(purpose: ForgePurpose, *, limit: int = 10) -> list[dict[str, Any]]:
+    toks = _tokens(purpose.need)
+    scored: list[tuple[int, dict[str, Any]]] = []
+    for pkg in list_npm():
         tags = set(pkg.get("purpose_tags") or [])
         score = sum(2 for t in tags if t in toks)
         scored.append((score, pkg))

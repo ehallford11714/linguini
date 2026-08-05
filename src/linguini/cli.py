@@ -40,9 +40,13 @@ def main(argv: list[str] | None = None) -> int:
     sk_sub = sk.add_subparsers(dest="skills_cmd", required=True)
     sk_sub.add_parser("list")
 
-    lb = sub.add_parser("libs", help="List allowlisted pip packages")
+    lb = sub.add_parser("libs", help="List curated pip packages")
     lb_sub = lb.add_subparsers(dest="libs_cmd", required=True)
     lb_sub.add_parser("list")
+
+    nm = sub.add_parser("npm", help="List curated npm packages")
+    nm_sub = nm.add_subparsers(dest="npm_cmd", required=True)
+    nm_sub.add_parser("list")
 
     ch = sub.add_parser("chain", help="Run a local tool chain")
     ch.add_argument("--steps", required=True, help="Comma-separated tool names")
@@ -53,6 +57,16 @@ def main(argv: list[str] | None = None) -> int:
     inv.add_argument("--name", required=True)
     inv.add_argument("--skill", default=None, help="Prefer skill id")
     inv.add_argument("--llm", action="store_true", help="Allow bounded LLM fill (needs API key)")
+    inv.add_argument(
+        "--open-pip",
+        action="store_true",
+        help="Allow pip install beyond curated catalog (still sanitized + forge_venv)",
+    )
+    inv.add_argument(
+        "--open-npm",
+        action="store_true",
+        help="Allow npm install beyond curated catalog (still sanitized + forge_node)",
+    )
     inv.add_argument("--no-persist", action="store_true")
 
     fg = sub.add_parser("forge", help="Fulfill purpose: lean-back or invent/forge+persist")
@@ -106,6 +120,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "libs":
         _print(ling.libs())
         return 0
+    if args.cmd == "npm":
+        _print(ling.npm_packages())
+        return 0
     if args.cmd == "chain":
         steps = [s.strip() for s in args.steps.split(",") if s.strip()]
         _print(ling.chain(steps, text=args.text))
@@ -117,6 +134,8 @@ def main(argv: list[str] | None = None) -> int:
             use_llm=bool(args.llm),
             prefer_skill=args.skill,
             persist=not args.no_persist,
+            open_pip=bool(args.open_pip),
+            open_npm=bool(args.open_npm),
         )
         _print(fr.to_dict())
         return 0 if fr.ok else 1

@@ -9,7 +9,7 @@ from typing import Any, Optional, Sequence
 from linguini.forge.forge import ForgeResult, forge_tool, wrap_chain_as_native
 from linguini.forge.purpose import ForgePurpose, IOExample
 from linguini.ground.grounding import GroundingReport, ground_purpose
-from linguini.invent.catalogs import list_libs, list_skills
+from linguini.invent.catalogs import list_libs, list_npm, list_skills
 from linguini.invent.engine import InventResult, invent as invent_fn, invent_tool
 from linguini.invent.plan import InventionBrief
 from linguini.leanback.planner import LeanBackResult, lean_back
@@ -166,8 +166,10 @@ class Linguini:
         examples: list[IOExample] | None = None,
         persist: bool = True,
         require_native: bool = True,
+        open_pip: bool = False,
+        open_npm: bool = False,
     ) -> InventResult:
-        """Invent a novel tool: compose skills/MCP/libs → lint → pytest → persist."""
+        """Invent a novel tool: compose skills/MCP/pip/npm → lint → pytest → persist."""
         ir = invent_fn(
             need,
             root=self.root,
@@ -178,6 +180,8 @@ class Linguini:
             persist=persist,
             policy=self.policy,
             require_native=require_native,
+            open_pip=open_pip,
+            open_npm=open_npm,
         )
         if ir.persisted:
             self.tools.reload_natives()
@@ -274,6 +278,9 @@ class Linguini:
 
     def libs(self) -> list[dict[str, Any]]:
         return list_libs()
+
+    def npm_packages(self) -> list[dict[str, Any]]:
+        return list_npm()
 
     def run_tool(self, name: str, **kwargs: Any) -> Any:
         return self.tools.run(name, **kwargs)

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1
+
+- Expanded pip catalog + curated **npm** catalog for cross-runtime invention
+- `npm install` into `.linguini/forge_node/`; `node_proxy` adapter for natives
+- Open install flags: `--open-pip` / `--open-npm` (sanitized specs, isolated envs, verify-always)
+- Skill `md_npm_hygiene` — npm `marked` + Python entity hygiene
+- CLI: `linguini npm list`
+
 ## 0.2.0
 
 - **Tool inventor** is the product focus: MCP + allowlisted libs + skills → novel natives

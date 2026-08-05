@@ -1,4 +1,5 @@
-# Allowlisted PyPI packages for tool invention (pip only from this list).
+# Curated PyPI allowlist for invention. With policy.allow_open_pip, plans may
+# also request packages outside this list (still name-sanitized + forge_venv only).
 packages:
   - name: pyyaml
     import_roots: [yaml]
@@ -36,3 +37,75 @@ packages:
     import_roots: [regex]
     purpose_tags: [text, nlp, parse]
     network: false
+  - name: orjson
+    import_roots: [orjson]
+    purpose_tags: [json, data, perf]
+    network: false
+  - name: python-dateutil
+    import_roots: [dateutil]
+    purpose_tags: [time, parse, data]
+    network: false
+  - name: mistune
+    import_roots: [mistune]
+    purpose_tags: [markdown, docs, parse]
+    network: false
+  - name: bleach
+    import_roots: [bleach]
+    purpose_tags: [html, sanitize, security]
+    network: false
+  - name: jsonschema
+    import_roots: [jsonschema]
+    purpose_tags: [schema, validate, data]
+    network: false
+  - name: typing-extensions
+    import_roots: [typing_extensions]
+    purpose_tags: [types, code]
+    network: false
+  - name: attrs
+    import_roots: [attr, attrs]
+    purpose_tags: [schema, data]
+    network: false
+  - name: click
+    import_roots: [click]
+    purpose_tags: [cli, code]
+    network: false
+  - name: rich
+    import_roots: [rich]
+    purpose_tags: [cli, display]
+    network: false
+  - name: tenacity
+    import_roots: [tenacity]
+    purpose_tags: [retry, http]
+    network: false
+  - name: cachetools
+    import_roots: [cachetools]
+    purpose_tags: [cache, perf]
+    network: false
+  - name: networkx
+    import_roots: [networkx]
+    purpose_tags: [graph, entities, memory]
+    network: false
+  - name: numpy
+    import_roots: [numpy]
+    purpose_tags: [numeric, nlp, data]
+    network: false
+  - name: pandas
+    import_roots: [pandas]
+    purpose_tags: [tabular, data]
+    network: false
+  - name: scikit-learn
+    import_roots: [sklearn]
+    purpose_tags: [ml, nlp, classify]
+    network: false
+  - name: nltk
+    import_roots: [nltk]
+    purpose_tags: [nlp, tokenize]
+    network: false
+  - name: spacy
+    import_roots: [spacy]
+    purpose_tags: [nlp, entities]
+    network: false
+  - name: aiohttp
+    import_roots: [aiohttp]
+    purpose_tags: [http, async, fetch]
+    network: true

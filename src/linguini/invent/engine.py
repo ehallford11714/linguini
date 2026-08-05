@@ -14,7 +14,7 @@ from linguini.ground.grounding import ground_purpose
 from linguini.invent.catalogs import skill_by_id
 from linguini.invent.codegen import purpose_from_plan_examples
 from linguini.invent.composer import compose_plan
-from linguini.invent.deps import ensure_allowlisted_deps, resolve_pytest_python
+from linguini.invent.deps import ensure_plan_deps, resolve_pytest_python
 from linguini.invent.hooks import HookContext, InventionHooks, default_hooks
 from linguini.invent.llm_fill import FillResult, bounded_fill
 from linguini.invent.plan import InventionBrief, InventionPlan
@@ -166,15 +166,22 @@ def invent_tool(
             evidence=ctx.evidence,
         )
 
-    # Allowlisted deps
-    deps_result = ensure_allowlisted_deps(
+    open_pip = bool(brief.open_pip or getattr(policy, "allow_open_pip", False))
+    open_npm = bool(brief.open_npm or getattr(policy, "allow_open_npm", False))
+    # Open installs need network to hit registries
+    allow_network = bool(policy.allow_network or open_pip or open_npm)
+
+    deps_result = ensure_plan_deps(
         root,
-        plan.pip_deps,
+        pip_deps=plan.pip_deps,
+        npm_deps=plan.npm_deps,
         allow_pip_install=allow_pip_install and getattr(policy, "allow_pip_install", True),
-        allow_network_packages=policy.allow_network,
+        allow_npm_install=getattr(policy, "allow_npm_install", True),
+        allow_open_pip=open_pip,
+        allow_open_npm=open_npm,
+        allow_network=allow_network,
     )
-    if plan.pip_deps and not deps_result.ok:
-        # html skill needs bs4 — if install failed, refuse
+    if (plan.pip_deps or plan.npm_deps) and not deps_result.ok:
         return InventResult(
             ok=False,
             persisted=False,
@@ -185,16 +192,21 @@ def invent_tool(
             fill=fill,
             lint_ok=True,
             deps=deps_result.to_dict(),
-            reason="allowlisted pip install failed: " + "; ".join(deps_result.errors),
+            reason="pip/npm install failed: " + "; ".join(deps_result.errors),
             evidence=ctx.evidence,
         )
 
     python = resolve_pytest_python(root, prefer_forge=bool(plan.pip_deps))
-    # If no forge deps, use current interpreter (faster for pure nlp skills)
+    # If no forge pip deps, use current interpreter (faster for pure nlp / npm-only)
     if not plan.pip_deps:
         import sys
 
         python = sys.executable
+
+    # Expose root for node_proxy forge_node resolution during pytest
+    import os
+
+    os.environ["LINGUINI_ROOT"] = str(root)
 
     tests_ok = False
     stdout = stderr = ""
@@ -273,6 +285,8 @@ def invent(
     persist: bool = True,
     policy: SandboxPolicy | None = None,
     require_native: bool = True,
+    open_pip: bool = False,
+    open_npm: bool = False,
 ) -> InventResult:
     purpose = ForgePurpose(
         need=need,
@@ -280,5 +294,15 @@ def invent(
         examples=list(examples or []),
         require_native=require_native,
     )
-    brief = InventionBrief(use_llm=use_llm, prefer_skill=prefer_skill)
+    brief = InventionBrief(
+        use_llm=use_llm,
+        prefer_skill=prefer_skill,
+        open_pip=open_pip,
+        open_npm=open_npm,
+    )
+    if open_pip or open_npm:
+        policy = policy or SandboxPolicy()
+        policy.allow_open_pip = policy.allow_open_pip or open_pip
+        policy.allow_open_npm = policy.allow_open_npm or open_npm
+        policy.allow_network = True
     return invent_tool(purpose, root=root, name=name, brief=brief, persist=persist, policy=policy, skip_leanback=True)
