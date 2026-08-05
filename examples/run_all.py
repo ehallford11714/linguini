@@ -15,6 +15,7 @@ SCRIPTS = [
     "03_wrap_chain_as_native.py",
     "04_leanback_vs_forge.py",
     "05_create_and_reuse_pipeline.py",
+    "06_invent_mcp_and_lib.py",
 ]
 
 

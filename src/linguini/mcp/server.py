@@ -108,6 +108,31 @@ TOOLS: list[dict[str, Any]] = [
             "required": ["steps", "name"],
         },
     },
+    {
+        "name": "linguini_invent",
+        "description": "Invent a novel tool from skills/MCP/libs (lint + pytest before persist)",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "need": {"type": "string"},
+                "name": {"type": "string"},
+                "skill": {"type": "string"},
+                "use_llm": {"type": "boolean"},
+                "persist": {"type": "boolean"},
+            },
+            "required": ["need", "name"],
+        },
+    },
+    {
+        "name": "linguini_skills_list",
+        "description": "List invention skills (deterministic recipes)",
+        "inputSchema": {"type": "object", "properties": {}},
+    },
+    {
+        "name": "linguini_libs_list",
+        "description": "List allowlisted pip packages for invention",
+        "inputSchema": {"type": "object", "properties": {}},
+    },
 ]
 
 
@@ -166,6 +191,19 @@ def handle_tool(ling: "Linguini", name: str, arguments: dict[str, Any] | None) -
                 persist=bool(args.get("persist", True)),
             )
             return _ok_text(fr.to_dict())
+        if name == "linguini_invent":
+            fr = ling.invent(
+                str(args["need"]),
+                name=str(args["name"]),
+                prefer_skill=args.get("skill"),
+                use_llm=bool(args.get("use_llm")),
+                persist=bool(args.get("persist", True)),
+            )
+            return _ok_text(fr.to_dict())
+        if name == "linguini_skills_list":
+            return _ok_text(ling.skills())
+        if name == "linguini_libs_list":
+            return _ok_text(ling.libs())
         return _err_text(f"Unknown tool: {name}")
     except Exception as exc:  # noqa: BLE001 — surface to MCP client
         return _err_text(f"{type(exc).__name__}: {exc}")

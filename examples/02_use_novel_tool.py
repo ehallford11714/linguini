@@ -22,10 +22,10 @@ def ensure_tool(ling: Linguini) -> None:
     names = {t["name"] for t in ling.tools.list(layer="native")}
     if TOOL in names:
         return
-    fr = ling.create_native_tool(
+    fr = ling.invent(
         "novel claim analyzer: extract entities, lemmas, and causation hygiene",
         name="claim_analyzer",
-        template="entity_hygiene",
+        prefer_skill="entity_hygiene",
     )
     if not fr.persisted:
         raise SystemExit(f"could not create {TOOL}: {fr.reason}")

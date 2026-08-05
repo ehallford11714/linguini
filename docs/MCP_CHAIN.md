@@ -9,9 +9,12 @@
 - `linguini chain` runs **local** tool steps  
 - Stdio MCP server: `linguini mcp` / `linguini-mcp` exposing forge, `linguini_create_native`, tools, chain, discover  
 
-## v0.2 (in progress)
+## v0.2
 
-- Live queries against [MCP Registry](https://registry.modelcontextprotocol.io/)  
-- Multi-server chains behind `allow_mcp_servers` allowlist  
+- Catalog entries include **tool schemas** (`tools[]` with `inputSchema`)
+- Fixture/local proxy: `linguini.invent.adapters.mcp_proxy.call_mcp_tool`
+- Invention skills can compose MCP tool ids into natives (`mcp_chain_wrap`)
+- Live registry client still optional; overlay via `LINGUINI_MCP_CATALOG`
+- Multi-server live chains behind `allow_mcp_servers` allowlist (opt-in)
 
 Remote servers are never auto-installed without explicit allowlist consent.

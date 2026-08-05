@@ -2,11 +2,12 @@
 
 | Doc | Topic |
 |-----|--------|
-| [TUTORIAL.md](TUTORIAL.md) | **Start here** — forge and reuse novel tools |
-| [EXAMPLES.md](EXAMPLES.md) | Catalog of runnable `examples/` scripts |
-| [PURPOSE.md](PURPOSE.md) | Why Linguini exists (foundry north star) |
-| [TOOL_FORGE.md](TOOL_FORGE.md) | Purpose contract, templates, test loop |
+| [TUTORIAL.md](TUTORIAL.md) | **Start here** — invent and reuse novel tools |
+| [INVENT.md](INVENT.md) | Inventor architecture, skills, LLM bounds, hooks |
+| [EXAMPLES.md](EXAMPLES.md) | Runnable example scripts |
+| [PURPOSE.md](PURPOSE.md) | Why Linguini exists |
+| [TOOL_FORGE.md](TOOL_FORGE.md) | Purpose contract / persist loop |
 | [SANDBOX.md](SANDBOX.md) | What natives may not do |
-| [MCP_CHAIN.md](MCP_CHAIN.md) | Discover, local chain, stdio MCP server |
+| [MCP_CHAIN.md](MCP_CHAIN.md) | Discover, chain, MCP server |
 
 Package README: [../README.md](../README.md)

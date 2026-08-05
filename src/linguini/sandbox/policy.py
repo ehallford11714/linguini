@@ -23,6 +23,13 @@ DEFAULT_ALLOWED_IMPORTS = frozenset(
         "linguini.suite.nlp",
         "linguini.ir",
         "linguini.ir.batch",
+        "linguini.invent",
+        "linguini.invent.adapters",
+        "linguini.invent.adapters.mcp_proxy",
+        "linguini.invent.adapters.lib_proxy",
+        "bs4",
+        "yaml",
+        "pydantic",
     }
 )
 
@@ -45,6 +52,7 @@ class SandboxPolicy:
     allow_network: bool = False
     allow_subprocess: bool = False
     allow_filesystem_write: bool = False
+    allow_pip_install: bool = True
     allowed_imports: frozenset[str] = DEFAULT_ALLOWED_IMPORTS
     allow_mcp_servers: list[str] = field(default_factory=list)
     pytest_timeout_s: float = 30.0

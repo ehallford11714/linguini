@@ -1,0 +1,24 @@
+id: html_ground_parse
+description: Parse HTML/markdown-like text with BeautifulSoup + NLP entity hygiene (compose lib + nlp)
+purpose_tags: [html, parse, grounding, docs, fetch, entity]
+compose_steps:
+  - kind: lib
+    ref: bs4
+    package: beautifulsoup4
+  - kind: nlp
+    ref: nlp.compose_entity_hygiene
+allowed_imports:
+  - linguini
+  - linguini.suite.nlp
+  - bs4
+  - re
+  - json
+pip_deps:
+  - beautifulsoup4
+mcp_tools:
+  - fetch.fetch
+template: html_ground_parse
+require_novel: true
+example_tests:
+  - input: "<p>Acme Corp grew 12%.</p>"
+    expected: { novel: true }

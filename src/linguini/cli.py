@@ -1,10 +1,9 @@
-"""Linguini CLI."""
+"""Linguini CLI — invent, forge, chain, discover."""
 
 from __future__ import annotations
 
 import argparse
 import json
-import sys
 from pathlib import Path
 
 from linguini import __version__
@@ -18,7 +17,7 @@ def _print(obj: object) -> None:
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(
         prog="linguini",
-        description="Forge native NLP tools with lean-back + verify",
+        description="Invent native tools from MCP + libs + skills (lean-back first, verify always)",
     )
     p.add_argument("--version", action="version", version=f"linguini {__version__}")
     p.add_argument("--root", default=".", help="Project root (native tools under .linguini/)")
@@ -34,31 +33,43 @@ def main(argv: list[str] | None = None) -> int:
     trun.add_argument("name")
     trun.add_argument("--text", required=True)
 
-    disc = sub.add_parser("discover", help="Discover purpose-aligned MCP servers (fixture catalog)")
+    disc = sub.add_parser("discover", help="Discover purpose-aligned MCP servers")
     disc.add_argument("--purpose", required=True)
+
+    sk = sub.add_parser("skills", help="List invention skills (recipes)")
+    sk_sub = sk.add_subparsers(dest="skills_cmd", required=True)
+    sk_sub.add_parser("list")
+
+    lb = sub.add_parser("libs", help="List allowlisted pip packages")
+    lb_sub = lb.add_subparsers(dest="libs_cmd", required=True)
+    lb_sub.add_parser("list")
 
     ch = sub.add_parser("chain", help="Run a local tool chain")
     ch.add_argument("--steps", required=True, help="Comma-separated tool names")
     ch.add_argument("--text", required=True)
 
-    fg = sub.add_parser("forge", help="Fulfill purpose: lean-back or forge+testloop+persist")
+    inv = sub.add_parser("invent", help="Invent a novel tool (compose → lint → pytest → persist)")
+    inv.add_argument("--need", required=True)
+    inv.add_argument("--name", required=True)
+    inv.add_argument("--skill", default=None, help="Prefer skill id")
+    inv.add_argument("--llm", action="store_true", help="Allow bounded LLM fill (needs API key)")
+    inv.add_argument("--no-persist", action="store_true")
+
+    fg = sub.add_parser("forge", help="Fulfill purpose: lean-back or invent/forge+persist")
     fg.add_argument("--need", required=True)
     fg.add_argument("--name", default=None)
-    fg.add_argument("--force", action="store_true", help="Skip lean-back; always forge")
-    fg.add_argument(
-        "--native",
-        action="store_true",
-        help="Require a new native tool (never lean-back onto library aliases)",
-    )
+    fg.add_argument("--force", action="store_true", help="Skip lean-back; always invent")
+    fg.add_argument("--native", action="store_true", help="Require a new native tool")
     fg.add_argument("--template", default="auto")
-    fg.add_argument("--steps", default=None, help="Comma-separated steps for chain_wrap")
+    fg.add_argument("--steps", default=None)
     fg.add_argument("--no-persist", action="store_true")
 
-    cr = sub.add_parser("create", help="Create a new native novel tool (always forge+persist)")
+    cr = sub.add_parser("create", help="Create native via inventor (alias of invent)")
     cr.add_argument("--need", required=True)
     cr.add_argument("--name", required=True)
     cr.add_argument("--template", default="auto")
-    cr.add_argument("--steps", default=None, help="Comma-separated compose/chain steps")
+    cr.add_argument("--steps", default=None)
+    cr.add_argument("--llm", action="store_true")
     cr.add_argument("--no-persist", action="store_true")
 
     wc = sub.add_parser("wrap-chain", help="Persist a tool chain as one native")
@@ -89,10 +100,26 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "discover":
         _print(ling.discover(args.purpose))
         return 0
+    if args.cmd == "skills":
+        _print(ling.skills())
+        return 0
+    if args.cmd == "libs":
+        _print(ling.libs())
+        return 0
     if args.cmd == "chain":
         steps = [s.strip() for s in args.steps.split(",") if s.strip()]
         _print(ling.chain(steps, text=args.text))
         return 0
+    if args.cmd == "invent":
+        fr = ling.invent(
+            args.need,
+            name=args.name,
+            use_llm=bool(args.llm),
+            prefer_skill=args.skill,
+            persist=not args.no_persist,
+        )
+        _print(fr.to_dict())
+        return 0 if fr.ok else 1
     if args.cmd == "forge":
         steps = (
             [s.strip() for s in args.steps.split(",") if s.strip()] if args.steps else None
@@ -109,15 +136,12 @@ def main(argv: list[str] | None = None) -> int:
         _print(result.to_dict() if hasattr(result, "to_dict") else result)
         return 0 if getattr(result, "ok", False) else 1
     if args.cmd == "create":
-        steps = (
-            [s.strip() for s in args.steps.split(",") if s.strip()] if args.steps else None
-        )
         fr = ling.create_native_tool(
             args.need,
             name=args.name,
             template=args.template,
-            must_compose=steps,
             persist=not args.no_persist,
+            use_llm=bool(args.llm),
         )
         _print(fr.to_dict())
         return 0 if fr.ok else 1

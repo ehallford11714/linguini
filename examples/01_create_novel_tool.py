@@ -14,17 +14,16 @@ def main() -> int:
     root = workspace()
     ling = Linguini(root=root)
 
-    fr = ling.create_native_tool(
+    fr = ling.invent(
         "novel claim analyzer: extract entities, lemmas, and causation hygiene",
         name="claim_analyzer",
-        template="entity_hygiene",
+        prefer_skill="entity_hygiene",
         examples=[
             IOExample(
                 input="Acme Corp grew 12%. Demand looks fine.",
                 expected={"novel": True},
             )
         ],
-        invariants=["output tokens are lowercase"],
     )
     dump("forge_result", fr.to_dict())
     if not fr.persisted:

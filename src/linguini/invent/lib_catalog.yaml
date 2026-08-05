@@ -1,0 +1,38 @@
+# Allowlisted PyPI packages for tool invention (pip only from this list).
+packages:
+  - name: pyyaml
+    import_roots: [yaml]
+    purpose_tags: [config, parse, data]
+    network: false
+  - name: pydantic
+    import_roots: [pydantic]
+    purpose_tags: [schema, validate, data]
+    network: false
+  - name: beautifulsoup4
+    import_roots: [bs4]
+    purpose_tags: [html, parse, grounding, docs]
+    network: false
+  - name: lxml
+    import_roots: [lxml]
+    purpose_tags: [html, xml, parse]
+    network: false
+  - name: httpx
+    import_roots: [httpx]
+    purpose_tags: [http, fetch, grounding]
+    network: true
+  - name: requests
+    import_roots: [requests]
+    purpose_tags: [http, fetch]
+    network: true
+  - name: markdown-it-py
+    import_roots: [markdown_it]
+    purpose_tags: [markdown, docs, parse]
+    network: false
+  - name: jinja2
+    import_roots: [jinja2]
+    purpose_tags: [template, codegen]
+    network: false
+  - name: regex
+    import_roots: [regex]
+    purpose_tags: [text, nlp, parse]
+    network: false

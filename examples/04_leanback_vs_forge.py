@@ -30,17 +30,16 @@ def main() -> int:
         "plan": lean.leanback.plan.to_dict() if lean.leanback and lean.leanback.plan else None,
     })
 
-    # 2) Same need but create_native_tool → always forge + persist a novel op
-    fr = ling.create_native_tool(
+    # 2) Same need but invent → always compose skill + persist a novel op
+    fr = ling.invent(
         "tokenize and lowercase text as a novel native",
         name="forced_lower_tokens",
-        template="lowercase_tokens",
+        prefer_skill="lowercase_tokens",
         examples=[
             IOExample(input="Hello World", expected={"tokens": ["hello", "world"]})
         ],
-        invariants=["output tokens are lowercase"],
     )
-    dump("create_native_tool (force forge)", {
+    dump("invent (force novel native)", {
         "ok": fr.ok,
         "persisted": fr.persisted,
         "native_name": fr.native_name,

@@ -1,25 +1,26 @@
 # Changelog
 
+## 0.2.0
+
+- **Tool inventor** is the product focus: MCP + allowlisted libs + skills → novel natives
+- `linguini invent` / `Linguini.invent` — compose → lint → pytest → persist
+- Skills catalog (`invent/skills/`), lib allowlist (`lib_catalog.yaml`), lifecycle hooks
+- Lint-like AST verifier before pytest; frozen `InventionPlan` bounds for LLM fill
+- Allowlisted pip into `.linguini/forge_venv/`
+- MCP catalog tool schemas + local fixture proxy (`call_mcp_tool`)
+- Optional bounded LLM backend (`--llm` / `LINGUINI_LLM_API_KEY`)
+- CLI: `skills list`, `libs list`; MCP: `linguini_invent`, `linguini_skills_list`
+- Docs: INVENT.md, updated tutorial/examples
+
 ## 0.1.2
 
-- Tutorial: [docs/TUTORIAL.md](docs/TUTORIAL.md) — forge and reuse novel tools
-- Runnable examples under `examples/` (create, use, wrap-chain, lean-back vs forge, pipeline)
-- Docs index: [docs/README.md](docs/README.md), [docs/EXAMPLES.md](docs/EXAMPLES.md)
-- MCP discover: optional `LINGUINI_MCP_CATALOG` overlay + `catalog_source` on results
+- Tutorial + runnable examples for create/use of novel natives
+- MCP discover catalog overlay via `LINGUINI_MCP_CATALOG`
 
 ## 0.1.1
 
-- `Linguini.create_native_tool` / `wrap_chain` — always forge novel natives; persist on green
-- Novel codegen templates: `entity_hygiene`, `tokenize_hygiene`, `chain_wrap`, `lowercase_tokens`
-- MCP stdio server (`linguini mcp` / `linguini-mcp`) with `linguini_create_native`
-- CLI: `create`, `wrap-chain`, `forge --native`, `hygiene`
-- Expanded NLP suite ops + CARAG/Netrin secondary hygiene stubs
-- E2E tests proving create → persist → reload → run
+- `create_native_tool` / `wrap_chain`, novel templates, MCP stdio server
 
 ## 0.1.0
 
-- Purpose-first tool foundry: ground → lean-back/chain → forge → pytest loop → persist
-- Strict sandbox (no network / disallowed imports by default)
-- Soft NLP suite adapters + tooling library + native registry
-- MCP discover fixture catalog + local chain planner
-- CLI: `forge`, `tools`, `discover`, `chain`, `backends`
+- Purpose-first foundry scaffold: ground → lean-back → forge → persist

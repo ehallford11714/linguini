@@ -1,0 +1,16 @@
+id: tokenize_hygiene
+description: Lowercase tokens plus spurious-causation hygiene
+purpose_tags: [tokenize, hygiene, spurious, wisdom]
+compose_steps:
+  - kind: nlp
+    ref: nlp.compose_tokenize_hygiene
+allowed_imports:
+  - linguini
+  - linguini.suite.nlp
+pip_deps: []
+mcp_tools: []
+template: tokenize_hygiene
+require_novel: true
+example_tests:
+  - input: "Hello World"
+    expected: { novel: true }

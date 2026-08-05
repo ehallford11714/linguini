@@ -1,12 +1,15 @@
 # Linguini
 
-**NLP suite + tooling library that forges native novel tools ad hoc — grounded, verifiable, lean-back first.**
+**Tool inventor** — compose MCP servers, allowlisted open-source libraries, and coding skills into **novel native tools**. Lean-back first; LLM fill only inside deterministic bounds; lint + pytest before any persist.
 
 ```
-ground purpose → discover / lean-back chain existing tools
-             → forge only if gap remains
-             → unit-test loop (persist only on green)
-             → save native tools for future MCP/CLI use
+purpose → discover (MCP + libs + skills)
+       → lean-back / compose existing adapters
+       → invent plan (frozen bounds)
+       → [optional LLM fill within bounds]
+       → lint verifier → pytest sandbox
+       → persist native only on green
+       → reuse via CLI / MCP / chain
 ```
 
 ## Install
@@ -17,79 +20,65 @@ python -m venv .venv
 .\.venv\Scripts\pip install -e ".[dev]"
 ```
 
+## Invent a novel tool
+
+```python
+from linguini import Linguini
+
+ling = Linguini(root=".")
+ir = ling.invent(
+    "novel entity hygiene analyzer for claims",
+    name="claim_analyzer",
+    prefer_skill="entity_hygiene",  # or omit to auto-score skills
+)
+assert ir.persisted
+print(ling.run_tool("native.claim_analyzer", text="Acme Corp grew 12%."))
+```
+
+```powershell
+python -m linguini invent --need "chain mcp fetch and memory with hygiene" --name mcp_chain --skill mcp_chain_wrap
+python -m linguini skills list
+python -m linguini libs list
+python -m linguini tools run native.mcp_chain --text "Ground this claim"
+```
+
+Bounded LLM fill (optional; needs `LINGUINI_LLM_API_KEY` / `OPENAI_API_KEY`):
+
+```powershell
+python -m linguini invent --need "..." --name my_op --llm
+```
+
+## Chain mechanism
+
+| Stage | What |
+|-------|------|
+| **Purpose** | `ForgePurpose` / invent need |
+| **Discover** | MCP catalog (tool schemas) + lib allowlist |
+| **Skills** | Deterministic recipes under `invent/skills/` |
+| **Plan** | Frozen `InventionPlan` (LLM cannot expand allowlist) |
+| **Hooks** | lint → pytest → persist gates |
+| **Reuse** | `native.*` via CLI / MCP / `chain` |
+
 ## Tutorial & examples
 
-- **[Tutorial: forge and reuse novel tools](docs/TUTORIAL.md)** — start here
-- **[Examples catalog](docs/EXAMPLES.md)** · runnable scripts in [`examples/`](examples/)
+- **[Tutorial](docs/TUTORIAL.md)** — invent, verify, reuse
+- **[Examples](docs/EXAMPLES.md)** · [`examples/`](examples/)
+- **[INVENT.md](docs/INVENT.md)** — inventor architecture
 
 ```powershell
 $env:PYTHONPATH = "src"
 python examples/run_all.py
 ```
 
-## Create a native tool
-
-```python
-from linguini import Linguini
-
-ling = Linguini(root=".")
-fr = ling.create_native_tool(
-    "novel entity hygiene analyzer for claims",
-    name="entity_hygiene_v1",
-)
-assert fr.persisted
-print(ling.run_tool("native.entity_hygiene_v1", text="Acme Corp grew 12%."))
-```
-
-```powershell
-python -m linguini create --need "novel entity hygiene" --name entity_hygiene_v1
-python -m linguini tools run native.entity_hygiene_v1 --text "Acme Corp grew 12%."
-python -m linguini wrap-chain --steps "nlp.lowercase_tokens,nlp.claim_hygiene" --name tok_hygiene
-```
-
-MCP stdio server (also `linguini-mcp`):
-
-```powershell
-python -m linguini mcp
-```
-
-## Lean-back first
-
-```python
-from linguini import Linguini, ForgePurpose, IOExample
-
-ling = Linguini(root=".")
-result = ling.fulfill(
-    ForgePurpose(
-        need="tokenize and lowercase text",
-        examples=[IOExample(input="Hello World", expected={"tokens": ["hello", "world"]})],
-    )
-)
-print(result.mode)  # "chain" when existing tools suffice; "forge" on gap / require_native
-```
-
-## Operating principles
-
-| Principle | Meaning |
-|-----------|---------|
-| **Grounding** | Forge/chain steps cite evidence (examples, NLP spans, docs) |
-| **Verifiable** | Persist natives only after green pytest |
-| **Lean-back** | Prefer chaining existing NLP/MCP tools before creating new ones |
-| **MCP chaining** | Compose multi-server tools; natives may wrap verified chains |
-
 ## Docs
 
 | Doc | Topic |
 |-----|--------|
-| [docs/TUTORIAL.md](docs/TUTORIAL.md) | Forge & reuse walkthrough |
-| [docs/EXAMPLES.md](docs/EXAMPLES.md) | Example scripts |
-| [docs/PURPOSE.md](docs/PURPOSE.md) | Why Linguini exists |
-| [docs/TOOL_FORGE.md](docs/TOOL_FORGE.md) | Purpose-driven forge |
+| [docs/TUTORIAL.md](docs/TUTORIAL.md) | Walkthrough |
+| [docs/INVENT.md](docs/INVENT.md) | Inventor + bounds + hooks |
+| [docs/TOOL_FORGE.md](docs/TOOL_FORGE.md) | Purpose / persist loop |
+| [docs/MCP_CHAIN.md](docs/MCP_CHAIN.md) | Discover + MCP |
 | [docs/SANDBOX.md](docs/SANDBOX.md) | Threat model |
-| [docs/MCP_CHAIN.md](docs/MCP_CHAIN.md) | Discovery + chaining |
-| [docs/README.md](docs/README.md) | Docs index |
-
-Secondary hygiene helpers: `linguini hygiene carag|netrin`.
 
 ## License
 

@@ -1,0 +1,24 @@
+id: mcp_chain_wrap
+description: Wrap ranked MCP tool stubs + NLP into a single native chain tool
+purpose_tags: [chain, mcp, compose, multi]
+compose_steps:
+  - kind: mcp
+    ref: fetch.fetch
+  - kind: mcp
+    ref: memory.search
+  - kind: nlp
+    ref: nlp.claim_hygiene
+allowed_imports:
+  - linguini
+  - linguini.suite.nlp
+  - linguini.invent.adapters
+  - linguini.invent.adapters.mcp_proxy
+pip_deps: []
+mcp_tools:
+  - fetch.fetch
+  - memory.search
+template: mcp_chain_wrap
+require_novel: true
+example_tests:
+  - input: "Ground this claim about Acme"
+    expected: { novel: true }

@@ -1,0 +1,18 @@
+id: lowercase_tokens
+description: Novel lowercase tokenize + lemmas native
+purpose_tags: [tokenize, lowercase, tokens]
+compose_steps:
+  - kind: nlp
+    ref: nlp.lowercase_tokens
+  - kind: nlp
+    ref: nlp.lemmas
+allowed_imports:
+  - linguini
+  - linguini.suite.nlp
+pip_deps: []
+mcp_tools: []
+template: lowercase_tokens
+require_novel: true
+example_tests:
+  - input: "Hello World"
+    expected: { tokens: [hello, world] }

@@ -42,9 +42,13 @@ def test_require_native_skips_leanback(tmp_path: Path) -> None:
             template="lowercase_tokens",
         )
     )
-    assert result.mode == "forge"
+    assert result.mode in {"forge", "invent"}
     assert result.ok
-    assert result.forge and result.forge.persisted
+    persisted = (
+        (result.forge and result.forge.persisted)
+        or (result.invent and result.invent.persisted)
+    )
+    assert persisted
     out = ling.run_tool("native.forced_native_tok", text="Hello World")
     assert out["novel"] is True
     assert out["tokens"] == ["hello", "world"]

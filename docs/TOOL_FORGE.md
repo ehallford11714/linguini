@@ -1,40 +1,34 @@
-# Tool forge
+# Tool forge / invent
+
+Prefer the **inventor** path — see [INVENT.md](INVENT.md).
 
 ## Purpose contract
 
 `ForgePurpose` carries `need`, `examples`, `invariants`, optional `must_compose`, and:
 
-- `require_native=True` — never lean-back onto library aliases; always forge a native
-- `template` — `auto` | `entity_hygiene` | `tokenize_hygiene` | `lowercase_tokens` | `chain_wrap`
+- `require_native=True` — never lean-back onto library aliases; invent a native
+- `template` / skill id — maps to `invent/skills/*.yaml`
 
-## Create native tools
-
-Primary APIs (always forge + testloop; persist only on green):
+## Invent native tools
 
 ```python
 ling = Linguini(root=".")
-fr = ling.create_native_tool(
+ir = ling.invent(
     "novel entity hygiene analyzer",
     name="entity_hygiene_v1",
-    template="entity_hygiene",
+    prefer_skill="entity_hygiene",
 )
-# → native.entity_hygiene_v1 under .linguini/native_tools/
-
-fr = ling.wrap_chain(
-    ["nlp.lowercase_tokens", "nlp.claim_hygiene"],
-    name="tok_hygiene_chain",
-)
+# → lint + pytest + persist under .linguini/native_tools/
 ```
 
 CLI:
 
 ```powershell
-python -m linguini create --need "novel entity hygiene" --name my_op
-python -m linguini forge --need "..." --name my_op --native
+python -m linguini invent --need "novel entity hygiene" --name my_op --skill entity_hygiene
 python -m linguini wrap-chain --steps "nlp.tokenize,nlp.claim_hygiene" --name chain_op
 ```
 
-MCP tools: `linguini_create_native`, `linguini_wrap_chain`, `linguini_forge`.
+MCP tools: `linguini_invent`, `linguini_create_native`, `linguini_wrap_chain`, `linguini_forge`.
 
 ## Loop
 

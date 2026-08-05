@@ -9,6 +9,7 @@ Runnable scripts that **create** novel native tools, then **use** them.
 | [`03_wrap_chain_as_native.py`](03_wrap_chain_as_native.py) | Wrap an NLP chain into one native |
 | [`04_leanback_vs_forge.py`](04_leanback_vs_forge.py) | Lean-back vs `require_native` forge |
 | [`05_create_and_reuse_pipeline.py`](05_create_and_reuse_pipeline.py) | Full create → list → run → chain pipeline |
+| [`06_invent_mcp_and_lib.py`](06_invent_mcp_and_lib.py) | Invent MCP-chain skill native |
 | [`run_all.py`](run_all.py) | Run every example in order |
 
 Natives are written under `examples/_workspace/.linguini/native_tools/` (gitignored).

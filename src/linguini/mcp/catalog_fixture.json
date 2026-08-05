@@ -1,41 +1,132 @@
 {
-  "source": "fixture — offline purpose-aligned MCP catalog (v0.1)",
+  "source": "fixture — offline purpose-aligned MCP catalog with tool schemas",
   "servers": [
     {
       "id": "fetch",
       "package": "@modelcontextprotocol/server-fetch",
-      "purpose_tags": ["grounding", "docs", "web"],
-      "description": "Web content fetching and markdown conversion for grounding"
+      "purpose_tags": ["grounding", "docs", "web", "fetch", "html"],
+      "description": "Web content fetching and markdown conversion for grounding",
+      "tools": [
+        {
+          "name": "fetch",
+          "description": "Fetch a URL and return text/markdown",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "url": {"type": "string"},
+              "text": {"type": "string"}
+            }
+          }
+        }
+      ]
     },
     {
       "id": "filesystem",
       "package": "@modelcontextprotocol/server-filesystem",
       "purpose_tags": ["persist", "files"],
-      "description": "Path-scoped filesystem access"
+      "description": "Path-scoped filesystem access",
+      "tools": [
+        {
+          "name": "read_file",
+          "description": "Read a file under allowlisted roots",
+          "inputSchema": {
+            "type": "object",
+            "properties": {"path": {"type": "string"}},
+            "required": ["path"]
+          }
+        },
+        {
+          "name": "write_file",
+          "description": "Write a file under allowlisted roots",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "path": {"type": "string"},
+              "content": {"type": "string"}
+            },
+            "required": ["path", "content"]
+          }
+        }
+      ]
     },
     {
       "id": "memory",
       "package": "@modelcontextprotocol/server-memory",
       "purpose_tags": ["memory", "grounding", "entities"],
-      "description": "Knowledge-graph memory across sessions"
+      "description": "Knowledge-graph memory across sessions",
+      "tools": [
+        {
+          "name": "search",
+          "description": "Search memory graph nodes",
+          "inputSchema": {
+            "type": "object",
+            "properties": {"query": {"type": "string"}, "text": {"type": "string"}},
+            "required": ["query"]
+          }
+        },
+        {
+          "name": "create_entities",
+          "description": "Create memory entities",
+          "inputSchema": {
+            "type": "object",
+            "properties": {"entities": {"type": "array"}}
+          }
+        }
+      ]
     },
     {
       "id": "sequential-thinking",
       "package": "@modelcontextprotocol/server-sequential-thinking",
       "purpose_tags": ["lean-back", "reasoning"],
-      "description": "Structured reflective reasoning before forge"
+      "description": "Structured reflective reasoning before forge",
+      "tools": [
+        {
+          "name": "think",
+          "description": "Run a sequential thinking step",
+          "inputSchema": {
+            "type": "object",
+            "properties": {"thought": {"type": "string"}},
+            "required": ["thought"]
+          }
+        }
+      ]
     },
     {
       "id": "github",
       "package": "@modelcontextprotocol/server-github",
       "purpose_tags": ["code", "grounding", "git"],
-      "description": "GitHub API for code grounding and export"
+      "description": "GitHub API for code grounding and export",
+      "tools": [
+        {
+          "name": "search_code",
+          "description": "Search code on GitHub",
+          "inputSchema": {
+            "type": "object",
+            "properties": {"query": {"type": "string"}},
+            "required": ["query"]
+          }
+        }
+      ]
     },
     {
       "id": "codeforge",
       "package": "max-rousseau/codeforge-mcp",
       "purpose_tags": ["verify", "codegen", "sandbox"],
-      "description": "Sandboxed code execution and skill reuse"
+      "description": "Sandboxed code execution and skill reuse",
+      "tools": [
+        {
+          "name": "execute",
+          "description": "Execute code in a sandbox",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "language": {"type": "string"},
+              "code": {"type": "string"}
+            },
+            "required": ["code"]
+          }
+        }
+      ]
     }
   ]
 }

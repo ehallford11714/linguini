@@ -1,0 +1,17 @@
+id: entity_hygiene
+description: Compose NLP entities + claim hygiene + lemmas into a novel native
+purpose_tags: [entity, analyze, novel, hygiene, claim]
+compose_steps:
+  - kind: nlp
+    ref: nlp.compose_entity_hygiene
+allowed_imports:
+  - linguini
+  - linguini.suite
+  - linguini.suite.nlp
+pip_deps: []
+mcp_tools: []
+template: entity_hygiene
+require_novel: true
+example_tests:
+  - input: "Acme Corp grew 12%. Demand looks fine."
+    expected: { novel: true }
