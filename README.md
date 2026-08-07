@@ -12,6 +12,17 @@ purpose → discover (MCP + libs + skills)
        → reuse via CLI / MCP / chain
 ```
 
+## For agents (MCP)
+
+**Start here:** [AGENTS.md](AGENTS.md)
+
+```powershell
+pip install -e ".[mcp]"
+python -m linguini.mcp.server --root .
+```
+
+Cursor: [`.cursor/mcp.json`](.cursor/mcp.json) · skill: [`.cursor/skills/linguini/SKILL.md`](.cursor/skills/linguini/SKILL.md)
+
 ## Install
 
 ```powershell

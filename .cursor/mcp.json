@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "linguini": {
+      "command": "python",
+      "args": ["-m", "linguini.mcp.server", "--root", "."],
+      "env": {
+        "PYTHONUTF8": "1"
+      }
+    }
+  }
+}
